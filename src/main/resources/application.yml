@@ -9,11 +9,6 @@ spring:
   application:
     name: jwt-security-demo
 
-  servlet:
-    multipart:
-      max-file-size: 20MB
-      max-request-size: 20MB
-
   lifecycle:
     # 设置优雅关机缓冲时间
     timeout-per-shutdown-phase: 10s
