@@ -1,0 +1,66 @@
+server:
+  port: 8888
+  servlet:
+    context-path: /api
+  # 优雅关机 kill -2 PID
+  shutdown: graceful
+
+spring:
+  application:
+    name: jwt-security-demo
+
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+
+  lifecycle:
+    # 设置优雅关机缓冲时间
+    timeout-per-shutdown-phase: 10s
+
+  data:
+    redis:
+      host: 127.0.0.1
+      database: 0
+      password: 123456
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: 5S
+          max-idle: 5
+          min-idle: 0
+      timeout: 3S
+      port: 6379
+
+jwt:
+  security:
+    # 请求头名称
+    header: Authorization
+    # 请求头前缀
+    token-prefix: Bearer
+    # 访问令牌过期时间
+    expires-in: 30m
+    # 刷新令牌过期时间
+    refresh-token-expires-in: 15d
+    # 允许的时差
+    allowed-clock-skew: 0s
+    # 指定刷新token的请求路径
+    refresh-token-path:
+    # 采用注解形式指定请求刷新令牌的路径（设置为true时，refresh-token-path失效并且只能指定一个刷新路径）
+    enabled-refresh-token-api-annotation: true
+    secret:
+      public-key: classpath:app.pub
+      private-key: classpath:app.key
+    token-security:
+      # 是否启用令牌安全
+      enabled: true
+      refresh-token-revoke:
+        # 刷新令牌是否启用注销功能
+        enabled: true
+        # 刷新令牌key前缀
+        key-prefix: 'jwt:refresh_token:'
+      access-token-blacklist:
+        # 访问令牌是否启用黑名单
+        enabled: true
+        # 访问令牌黑名单key前缀
+        key-prefix: 'jwt:access_token:blacklist:'
