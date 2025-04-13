@@ -27,7 +27,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.github.TsukasaHwan</groupId>
+            <groupId>io.github.tsukasahwan</groupId>
             <artifactId>jwt-security-spring-boot-starter</artifactId>
             <version>1.0.0</version>
         </dependency>
