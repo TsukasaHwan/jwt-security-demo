@@ -2,7 +2,6 @@ server:
   port: 8888
   servlet:
     context-path: /api
-  # 优雅关机 kill -2 PID
   shutdown: graceful
 
 spring:
