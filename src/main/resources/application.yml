@@ -48,6 +48,7 @@ jwt:
     token-security:
       # 是否启用令牌安全
       enabled: true
+      storage-type: redis
       refresh-token-revoke:
         # 刷新令牌是否启用注销功能
         enabled: true
