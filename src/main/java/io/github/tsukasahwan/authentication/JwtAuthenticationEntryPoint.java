@@ -1,14 +1,15 @@
 package io.github.tsukasahwan.authentication;
 
-import io.github.tsukasahwan.util.Result;
 import io.github.tsukasahwan.jwt.exception.AccessTokenBlacklistedException;
-import io.github.tsukasahwan.jwt.exception.ExpiredJwtAuthenticationException;
+import io.github.tsukasahwan.jwt.exception.ExpiredJwtException;
 import io.github.tsukasahwan.jwt.exception.InvalidTokenException;
 import io.github.tsukasahwan.jwt.exception.RefreshTokenRevokedException;
 import io.github.tsukasahwan.jwt.util.WebUtils;
+import io.github.tsukasahwan.util.Result;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,6 +24,7 @@ import java.io.IOException;
  * @author Teamo
  * @since 2025/4/11
  */
+@Slf4j
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
@@ -43,11 +45,12 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         } else if (authException instanceof RefreshTokenRevokedException) {
             // 刷新令牌已撤销
             WebUtils.renderJson(response, Result.of(HttpServletResponse.SC_UNAUTHORIZED, "刷新令牌已撤销"));
-        } else if (authException instanceof ExpiredJwtAuthenticationException) {
+        } else if (authException instanceof ExpiredJwtException) {
             // 令牌已过期
             WebUtils.renderJson(response, Result.of(HttpServletResponse.SC_UNAUTHORIZED, "token已过期，请重新登录"));
         } else {
             // 其他异常
+            log.error("认证失败", authException);
             WebUtils.renderJson(response, Result.of(HttpServletResponse.SC_UNAUTHORIZED, "认证失败"));
         }
     }

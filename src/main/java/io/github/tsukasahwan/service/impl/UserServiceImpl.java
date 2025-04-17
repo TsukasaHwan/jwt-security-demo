@@ -1,6 +1,7 @@
 package io.github.tsukasahwan.service.impl;
 
 import io.github.tsukasahwan.jwt.core.Jwt;
+import io.github.tsukasahwan.jwt.core.JwtToken;
 import io.github.tsukasahwan.jwt.security.authentication.JwtAuthenticationManager;
 import io.github.tsukasahwan.jwt.util.JwtUtils;
 import io.github.tsukasahwan.service.UserService;
@@ -37,7 +38,7 @@ public class UserServiceImpl implements UserService {
         // 获取当前请求token
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         // String refreshToken = (String) authentication.getCredentials();
-        String refreshToken = JwtUtils.getTokenValue();
+        JwtToken refreshToken = JwtUtils.getJwtToken();
         UserDetailServiceImpl.User principal = (UserDetailServiceImpl.User) authentication.getPrincipal();
         return jwtAuthenticationManager.refresh(principal.getUsername(), refreshToken);
     }
@@ -47,7 +48,7 @@ public class UserServiceImpl implements UserService {
         // 获取当前请求token
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         // String accessToken = (String) authentication.getCredentials();
-        String accessToken = JwtUtils.getTokenValue();
+        JwtToken accessToken = JwtUtils.getJwtToken();
         UserDetailServiceImpl.User principal = (UserDetailServiceImpl.User) authentication.getPrincipal();
         jwtAuthenticationManager.logout(principal.getUsername(), accessToken);
     }
